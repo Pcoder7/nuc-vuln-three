@@ -59,19 +59,19 @@ jobs:
         shell: bash
         run: |
 
-          PATTERN="Automated http-multiple results from Correlation ID:"
+          PATTERN="feat(http-multiple-three):"
           
           # The path pattern to find the target files using a wildcard (*)
           
           TARGET_PATHSPEC="results/*/httpx_result.txt"
 
-          # --- Block 1: Finding the Commit (Unchanged) ---
+          # --- Block 1: Finding the Commit ---
           printf "::group::[DEBUG] Block 1: Finding Commit\n"
           
           # MODIFIED: The logic now ALWAYS searches the git log for the most recent
           # commit with the pattern. This is simpler and correctly finds the result
           # commit, implementing the "fallback" you want.
-          COMMIT=$(git log --no-merges --grep="$PATTERN" -n1 --format="%H")
+          COMMIT=$(git log --no-merges --grep="$PATTERN" -n1 --format="%H" || true)
 
           if [ -z "$COMMIT" ]; then
             printf "::error::No commit found matching '$PATTERN'\n"
